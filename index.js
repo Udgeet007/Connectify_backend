@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
   cors: {
-    origin: "https://your-frontend-url.com", // Replace with your actual frontend URL
+    origin: "https://cennectify-frontend.vercel.app", // Replace with your actual frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // Allow credentials like cookies, authorization headers, etc.
   },
