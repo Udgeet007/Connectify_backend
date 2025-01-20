@@ -12,6 +12,7 @@ const port = 8990;
 const cors = require('cors');
 require('dotenv').config();
 
+
 const connection = require('./db'); //connectToDB function
 connection();
 
@@ -20,14 +21,24 @@ let postRouter = require('./routes/postRoutes');
 let messageRouter = require('./routes/messageRoutes');
 
 // Configure CORS
+const allowedOrigins = [
+  "https://cennectify-frontend.vercel.app", 
+  "http://localhost:5173", // Local development (if needed)
+];
+
 app.use(
   cors({
-    origin: "https://your-frontend-url.com", // Replace with your actual frontend URL
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // Allow cookies, authorization headers, etc.
+    credentials: true,
   })
 );
-
 app.use(express.json({ limit: '100mb' }));
 app.set('view engine', 'ejs');
 
