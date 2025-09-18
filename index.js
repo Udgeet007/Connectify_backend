@@ -26,21 +26,6 @@ let messageRouter = require('./routes/messageRoutes');
 //   "http://localhost:5173", // Local development (if needed)
 // ];
 
-// Enable CORS for all routes
-app.use(cors({
-  origin: 'https://cennectify-frontend.vercel.app',
-  credentials: true
-}));
-
-// Or enable for specific route only
-app.use('/api/users/create', cors({
-  origin: 'https://cennectify-frontend.vercel.app',
-  methods: ['POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
-
-
 // app.use(
 //   cors({
 //     origin: function (origin, callback) {
@@ -54,6 +39,16 @@ app.use('/api/users/create', cors({
 //     credentials: true,
 //   })
 // );
+app.use(cors({
+  origin: 'https://cennectify-frontend.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+// Handle preflight requests for all routes
+app.options('*', cors());
+
 app.use(express.json({ limit: '100mb' }));
 app.set('view engine', 'ejs');
 
