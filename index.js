@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
   cors: {
-    origin: "https://cennectify-frontend.vercel.app", // Replace with your actual frontend URL
+    origin: "https://cennectify-frontend.vercel.app", 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // Allow credentials like cookies, authorization headers, etc.
   },
@@ -21,24 +21,39 @@ let postRouter = require('./routes/postRoutes');
 let messageRouter = require('./routes/messageRoutes');
 
 // Configure CORS
-const allowedOrigins = [
-  "https://cennectify-frontend.vercel.app", 
-  "http://localhost:5173", // Local development (if needed)
-];
+// const allowedOrigins = [
+//   "https://cennectify-frontend.vercel.app", 
+//   "http://localhost:5173", // Local development (if needed)
+// ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+// Enable CORS for all routes
+app.use(cors({
+  origin: 'https://cennectify-frontend.vercel.app',
+  credentials: true
+}));
+
+// Or enable for specific route only
+app.use('/api/users/create', cors({
+  origin: 'https://cennectify-frontend.vercel.app',
+  methods: ['POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true,
+//   })
+// );
 app.use(express.json({ limit: '100mb' }));
 app.set('view engine', 'ejs');
 
